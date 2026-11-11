@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Enfermería - Controles de Salud Paciente Crónico</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        clinical: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        medical: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full flex flex-col transition-colors duration-200">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-medical-500 flex items-center justify-center text-white shadow-md">
+                    <i class="fa-solid fa-stethoscope text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight tracking-tight">Controles de Salud paciente cronico</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Enfermería Atención primaria</p>
+                </div>
+            </div>
+
+            <!-- Header Actions / Theme Toggle -->
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 transition-colors" title="Cambiar tema">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
+                <button onclick="resetAllWorkflows()" class="px-3 py-1.5 rounded-lg bg-medical-50 hover:bg-medical-100 text-medical-700 dark:bg-medical-900/40 dark:text-medical-300 dark:hover:bg-medical-900/60 text-xs font-semibold transition-colors flex items-center">
+                    <i class="fa-solid fa-rotate-right mr-1.5"></i> Reiniciar Guía
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
+
+        <!-- SCREEN 1: LANDING VIEW (Only Paciente Crónico 1 & 2) -->
+        <div id="screen1" class="space-y-6">
+            <div class="text-center max-w-2xl mx-auto py-4">
+                <span class="px-3 py-1 bg-medical-50 dark:bg-medical-950 text-medical-700 dark:text-medical-300 text-xs font-bold rounded-full uppercase tracking-wider border border-medical-200 dark:border-medical-800">
+                    Selección de Tipo de Paciente Crónico
+                </span>
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-3">Controles de Salud Clínicos</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+                    Seleccione el perfil de paciente crónico para iniciar el control clínico guiado y anónimo.
+                </p>
+            </div>
+
+            <!-- Cards Grid: Paciente Crónico 1 & Paciente Crónico 2 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto py-4">
+                <!-- Paciente Crónico 1 (HTA) -->
+                <div onclick="goToScreen2('hta')" class="cursor-pointer bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-medical-500 dark:hover:border-medical-500 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group flex flex-col justify-between">
+                    <div class="absolute top-0 right-0 w-36 h-36 bg-medical-500/10 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-medical-50 dark:bg-medical-950 text-medical-600 dark:text-medical-400 flex items-center justify-center text-2xl mb-6 shadow-sm">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                        </div>
+                        <span class="text-xs font-bold text-medical-600 dark:text-medical-400 tracking-wider uppercase">Paciente crónico 1</span>
+                        <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1 mb-3">Hipertensión Arterial (HTA)</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                            Control y seguimiento de HTA conocida (controlada o mal controlada) y sospecha o nueva HTA en centro de salud.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-medical-600 dark:text-medical-400 font-semibold text-sm">
+                        <span>Seleccionar tipos de paciente</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Paciente Crónico 2 (DM2) -->
+                <div onclick="goToScreen2('dm2')" class="cursor-pointer bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-clinical-500 dark:hover:border-clinical-500 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group flex flex-col justify-between">
+                    <div class="absolute top-0 right-0 w-36 h-36 bg-clinical-500/10 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-clinical-50 dark:bg-clinical-950 text-clinical-600 dark:text-clinical-400 flex items-center justify-center text-2xl mb-6 shadow-sm">
+                            <i class="fa-solid fa-droplet"></i>
+                        </div>
+                        <span class="text-xs font-bold text-clinical-600 dark:text-clinical-400 tracking-wider uppercase">Paciente crónico 2</span>
+                        <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1 mb-3">Diabetes Mellitus (DM2)</h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                            Control de paciente DM2 con buen control o pacientes con mal control y cambios de tratamiento farmacológico.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-clinical-600 dark:text-clinical-400 font-semibold text-sm">
+                        <span>Seleccionar tipos de paciente</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: CONDITION SELECTION VIEW -->
+        <div id="screen2" class="space-y-6 hidden">
+            <div class="flex items-center justify-between bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <button onclick="goToScreen1()" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-colors flex items-center">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Volver a Selección Principal
+                </button>
+                <div id="screen2HeaderTitle" class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                    <!-- Dynamic Title -->
+                </div>
+            </div>
+
+            <div class="text-center max-w-xl mx-auto py-6">
+                <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Seleccione el Tipo de Paciente y Estado Clínico</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+                    Elija la condición exacta para generar automáticamente el resumen de tareas requeridas en la siguiente pantalla.
+                </p>
+            </div>
+
+            <!-- Condition Selection Cards Grid -->
+            <div id="conditionGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <!-- Dynamically populated via JS depending on HTA or DM2 -->
+            </div>
+        </div>
+
+        <!-- SCREEN 3: ACTION SUMMARY & CHECKLIST VIEW -->
+        <div id="screen3" class="space-y-6 hidden">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <button onclick="goToScreen2(currentPathology)" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-colors flex items-center">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Cambiar Tipo de Paciente
+                </button>
+                <div class="flex items-center space-x-3">
+                    <span id="screen3Indicator" class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300"></span>
+                    <span id="progressText" class="text-xs font-semibold px-2.5 py-1 bg-slate-100 dark:bg-slate-700 rounded-md">0/0 completados</span>
+                </div>
+            </div>
+
+            <!-- Summary Content Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-6">
+                <div id="summaryContentContainer">
+                    <!-- Dynamic summary items injected here -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-4 mt-auto text-center text-xs text-slate-500 dark:text-slate-400">
+        <p>Panel Profesional de Enfermería - Controles Paciente Crónico 1 y 2 &bull; Uso estrictamente clínico sin datos identificativos.</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        let currentPathology = '';
+        let currentCondition = '';
+
+        // Screen Navigation Functions
+        function goToScreen1() {
+            document.getElementById('screen1').classList.remove('hidden');
+            document.getElementById('screen2').classList.add('hidden');
+            document.getElementById('screen3').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToScreen2(pathology) {
+            currentPathology = pathology;
+            document.getElementById('screen1').classList.add('hidden');
+            document.getElementById('screen2').classList.remove('hidden');
+            document.getElementById('screen3').classList.add('hidden');
+
+            const headerTitle = document.getElementById('screen2HeaderTitle');
+            const grid = document.getElementById('conditionGrid');
+            grid.innerHTML = '';
+
+            if (pathology === 'hta') {
+                headerTitle.innerHTML = '<span class="text-medical-600 dark:text-medical-400"><i class="fa-solid fa-heart-pulse mr-1.5"></i> Paciente Crónico 1: Hipertensión Arterial (HTA)</span>';
+                
+                const htaConditions = [
+                    { id: 'mal', title: 'HTA Conocida - Mal Controlada', desc: 'Paciente diagnosticado con cifras tensionales elevadas o fuera de objetivos terapéuticos.', icon: 'fa-triangle-exclamation', color: 'rose' },
+                    { id: 'bien', title: 'HTA Conocida - Bien Controlada', desc: 'Paciente con presiones arteriales en rango objetivo y estabilidad clínica.', icon: 'fa-circle-check', color: 'emerald' },
+                    { id: 'nuevo', title: 'Nuevo Diagnóstico / Sin HTA Previa', desc: 'Valoración inicial en centro de salud o paciente con sospecha de nueva hipertensión.', icon: 'fa-user-plus', color: 'blue' }
+                ];
+
+                htaConditions.forEach(c => {
+                    grid.innerHTML += `
+                        <div onclick="goToScreen3('hta', '${c.id}')" class="cursor-pointer bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-${c.color}-500 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
+                            <div>
+                                <div class="w-12 h-12 rounded-xl bg-${c.color}-50 dark:bg-${c.color}-950 text-${c.color}-600 dark:text-${c.color}-400 flex items-center justify-center text-xl mb-4">
+                                    <i class="fa-solid ${c.icon}"></i>
+                                </div>
+                                <h3 class="font-bold text-slate-900 dark:text-white mb-2">${c.title}</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${c.desc}</p>
+                            </div>
+                            <div class="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-${c.color}-600 dark:text-${c.color}-400 font-semibold text-xs">
+                                <span>Ver resumen de acciones</span>
+                                <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
+                            </div>
+                        </div>
+                    `;
+                });
+
+            } else {
+                headerTitle.innerHTML = '<span class="text-clinical-600 dark:text-clinical-400"><i class="fa-solid fa-droplet mr-1.5"></i> Paciente Crónico 2: Diabetes Mellitus (DM2)</span>';
+
+                const dm2Conditions = [
+                    { id: 'bien', title: 'DM2 - Buen Control', desc: 'Paciente con valores de HbA1c en objetivos terapéuticos y estabilidad clínica mantenida.', icon: 'fa-circle-check', color: 'emerald' },
+                    { id: 'mal', title: 'DM2 - Mal Control', desc: 'Paciente con valores de HbA1c elevados fuera de objetivos terapéuticos.', icon: 'fa-triangle-exclamation', color: 'rose' },
+                    { id: 'cambio', title: 'DM2 - Cambio de Tratamiento / Revisión', desc: 'Modificación reciente en pauta farmacológica o ajuste de medicación oral/insulina.', icon: 'fa-pills', color: 'amber' }
+                ];
+
+                dm2Conditions.forEach(c => {
+                    grid.innerHTML += `
+                        <div onclick="goToScreen3('dm2', '${c.id}')" class="cursor-pointer bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-${c.color}-500 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
+                            <div>
+                                <div class="w-12 h-12 rounded-xl bg-${c.color}-50 dark:bg-${c.color}-950 text-${c.color}-600 dark:text-${c.color}-400 flex items-center justify-center text-xl mb-4">
+                                    <i class="fa-solid ${c.icon}"></i>
+                                </div>
+                                <h3 class="font-bold text-slate-900 dark:text-white mb-2">${c.title}</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${c.desc}</p>
+                            </div>
+                            <div class="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-${c.color}-600 dark:text-${c.color}-400 font-semibold text-xs">
+                                <span>Ver resumen de acciones</span>
+                                <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goToScreen3(pathology, condition) {
+            currentPathology = pathology;
+            currentCondition = condition;
+
+            document.getElementById('screen2').classList.add('hidden');
+            document.getElementById('screen3').classList.remove('hidden');
+
+            const indicator = document.getElementById('screen3Indicator');
+            const container = document.getElementById('summaryContentContainer');
+            container.innerHTML = '';
+
+            // Common "Valoración en consulta" HTML block with SCORE Calculators for HTA
+            const commonValoracionHTML = `
+                <div class="mt-8 pt-6 border-t-2 border-slate-200 dark:border-slate-700 space-y-6">
+                    <div class="flex items-center space-x-3 bg-medical-50 dark:bg-medical-950/40 p-4 rounded-2xl border border-medical-200 dark:border-medical-800">
+                        <div class="w-10 h-10 rounded-xl bg-medical-500 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                            <i class="fa-solid fa-clipboard-user"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base">Página final común a todas las patologías: Valoración en consulta</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Examen físico y anamnesis obligatorios para el control clínico</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Examen físico -->
+                        <div class="bg-slate-50 dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+                            <div class="flex items-center space-x-2 text-slate-900 dark:text-white font-bold text-sm">
+                                <i class="fa-solid fa-stethoscope text-medical-600"></i>
+                                <span>Examen físico</span>
+                            </div>
+                            <ul class="space-y-3 text-xs text-slate-700 dark:text-slate-300">
+                                <li class="flex items-start bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs">
+                                    <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                    <div class="flex-1">
+                                        <strong>Peso, talla, perímetro abdominal e IMC.</strong>
+                                        <div class="mt-2 p-2 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                                            <div class="text-[11px] font-semibold text-slate-500 mb-1"><i class="fa-solid fa-calculator mr-1"></i> Calculadora IMC Rápida:</div>
+                                            <div class="flex items-center space-x-2">
+                                                <input type="number" id="calcPeso" placeholder="Peso (kg)" class="w-1/2 px-2 py-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-xs">
+                                                <input type="number" id="calcTalla" placeholder="Talla (cm)" class="w-1/2 px-2 py-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-xs">
+                                                <button onclick="calculateIMC()" class="px-2.5 py-1 bg-medical-600 hover:bg-medical-700 text-white rounded text-[11px] font-semibold transition-colors">Calcular</button>
+                                            </div>
+                                            <div id="imcResult" class="mt-1.5 text-[11px] font-bold text-medical-600 dark:text-medical-400"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="flex items-start bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs">
+                                    <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                    <div><strong>Presión arterial:</strong> Medición en sedestación / decúbito y de pie si se sospecha hipotensión ortostática.</div>
+                                </li>
+                                <li class="flex items-start bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs">
+                                    <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                    <div><strong>Frecuencia cardíaca:</strong> Control de pulsaciones y ritmo.</div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Anamnesis -->
+                        <div class="bg-slate-50 dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+                            <div class="flex items-center space-x-2 text-slate-900 dark:text-white font-bold text-sm">
+                                <i class="fa-solid fa-comments text-medical-600"></i>
+                                <span>Anamnesis</span>
+                            </div>
+                            <ul class="space-y-3 text-xs text-slate-700 dark:text-slate-300">
+                                <li class="flex items-start bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs">
+                                    <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                    <div><strong>Antecedentes personales:</strong> Revisión del historial clínico.</div>
+                                </li>
+                                <li class="flex items-start bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs">
+                                    <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                    <div><strong>Problemas de salud:</strong> HTA, dislipemia, obesidad, trastornos del sueño.</div>
+                                </li>
+                                <li class="flex items-start bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs">
+                                    <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                    <div><strong>Medicación actual:</strong> Conciliación y revisión de adherencia farmacológica.</div>
+                                </li>
+                                <li class="flex items-start bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs">
+                                    <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                    <div><strong>Estado de vacunación:</strong> Gripe, neumoco, tétanos, HZ (Herpes Zóster).</div>
+                                </li>
+                                <li class="flex items-start bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs">
+                                    <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                    <div><strong>Hábitos y estilo de vida:</strong> Actividad física y pautas de alimentación.</div>
+                                </li>
+                                <li class="flex items-start bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs">
+                                    <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                    <div><strong>Consumo de sustancias:</strong> Tabaco, alcohol y tóxicos.</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            if (pathology === 'hta' && condition === 'mal') {
+                indicator.innerHTML = '<span class="text-rose-600 dark:text-rose-400">HTA Conocida - Mal Controlada</span>';
+                container.innerHTML = `
+                    <div class="bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center space-x-2 text-rose-700 dark:text-rose-300 font-bold text-sm">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Resumen de actuaciones requeridas (Checklist Clínico HTA Mal Controlada)</span>
+                        </div>
+                        <ul class="space-y-3 text-xs text-slate-700 dark:text-slate-300">
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>Tensión Arterial (TA):</strong> Control anual / seguimiento estricto en consulta.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>Control de Salud:</strong> Programado estrechamente cada 3 meses.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>ITB (Índice Tobillo-Brazo):</strong> Realizar evaluación vascular periférica.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>Evaluación de síntomas:</strong> Buscar signos de claudicación intermitente o ausencias de pulsos pedios/tibiales.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>SCORE:</strong> Si >5 años o ante nuevo factor de riesgo <i class="fa-solid fa-arrow-right text-medical-600 mx-1"></i> <strong>Añadir SCORE</strong>.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>ECG:</strong> Cada 1-2 años según necesidad o sintomatología asociada.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>Analítica completa:</strong> Perfil bioquímico y metabólico actualizado.</div>
+                            </li>
+                        </ul>
+                    </div>
+                    ${commonValoracionHTML}
+                `;
+            } else if (pathology === 'hta' && condition === 'bien') {
+                indicator.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400">HTA Conocida - Bien Controlada</span>';
+                container.innerHTML = `
+                    <div class="bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50 rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center space-x-2 text-emerald-700 dark:text-emerald-300 font-bold text-sm">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Resumen de actuaciones requeridas (Checklist Clínico HTA Bien Controlada)</span>
+                        </div>
+                        <ul class="space-y-3 text-xs text-slate-700 dark:text-slate-300">
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>Tensión Arterial (TA):</strong> Control anual rutinario.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>Control de Salud:</strong> Programado cada 3 meses.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>ITB (Índice Tobillo-Brazo):</strong> Valoración vascular periférica de control.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>Retinografía:</strong> Solicitar en caso de retinopatía o DM asociada.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>SCORE:</strong> Cálculo periódico de riesgo cardiovascular global.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>IMA / ECG:</strong> Cada 3 años según necesidad o sintomatología.</div>
+                            </li>
+                        </ul>
+                    </div>
+                    ${commonValoracionHTML}
+                `;
+            } else if (pathology === 'hta' && condition === 'nuevo') {
+                indicator.innerHTML = '<span class="text-blue-600 dark:text-blue-400">Nuevo Diagnóstico / Sin HTA Previa</span>';
+                container.innerHTML = `
+                    <div class="bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center space-x-2 text-blue-700 dark:text-blue-300 font-bold text-sm">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>Resumen de actuaciones requeridas (Checklist Clínico Nuevo Diagnóstico)</span>
+                        </div>
+                        <ul class="space-y-3 text-xs text-slate-700 dark:text-slate-300">
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-blue-100 dark:border-blue-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div>
+                                    <strong>Control de salud cada 6 a 24 meses:</strong>
+                                    <ul class="list-disc ml-4 mt-1 space-y-1 text-slate-600 dark:text-slate-400">
+                                        <li>Tensión normal: revisión cada 2 a 3 años.</li>
+                                        <li>Aumento A1: control cada 6 a 9 meses.</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-blue-100 dark:border-blue-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>ITB:</strong> Evaluación inicial en campo o zarc.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-blue-100 dark:border-blue-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>Retinografía:</strong> Valoración de fondo de ojo recomendada.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-blue-100 dark:border-blue-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>SCORE:</strong> Si >5 años o cuando aparezca nuevo factor de riesgo.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-blue-100 dark:border-blue-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500">
+                                <div><strong>ECG:</strong> Cada 1-3 años según necesidad o sintomatología.</div>
+                            </li>
+                        </ul>
+                    </div>
+                    ${commonValoracionHTML}
+                `;
+            } else if (pathology === 'dm2' && condition === 'bien') {
+                indicator.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400">DM2 - Buen Control</span>';
+                container.innerHTML = `
+                    <div class="bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50 rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center space-x-2 text-emerald-700 dark:text-emerald-300 font-bold text-sm">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Resumen de actuaciones requeridas (Checklist Clínico DM2 Buen Control)</span>
+                        </div>
+                        <ul class="space-y-3 text-xs text-slate-700 dark:text-slate-300">
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>Control de salud:</strong> Programado periódicamente cada 6-12 meses.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>Control de Tensión Arterial (TA):</strong> Evaluación rutinaria en cada visita de control.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>Retinografía:</strong> Control preventivo cada 2-3 años.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>Exploración de pie diabético:</strong> Según estratificación de riesgo anual (bajo/muy bajo).</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>ECG:</strong> Cada 2-3 años o según criterio clínico.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>Analítica de control:</strong> HbA1c y perfil metabólico anual de mantenimiento.</div>
+                            </li>
+                        </ul>
+                    </div>
+                    ${commonValoracionHTML}
+                `;
+            } else if (pathology === 'dm2' && condition === 'mal') {
+                indicator.innerHTML = '<span class="text-rose-600 dark:text-rose-400">DM2 - Mal Control</span>';
+                container.innerHTML = `
+                    <div class="bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center space-x-2 text-rose-700 dark:text-rose-300 font-bold text-sm">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Resumen de actuaciones requeridas (Checklist Clínico DM2 Mal Control)</span>
+                        </div>
+                        <ul class="space-y-3 text-xs text-slate-700 dark:text-slate-300">
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>Control de salud:</strong> Programado cada 6 meses.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>Control de Tensión Arterial (TA):</strong> Evaluación en cada visita.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div>
+                                    <strong>Retinografía cada 2-3 años EXCEPTO:</strong>
+                                    <ul class="list-disc ml-4 mt-1 space-y-0.5 text-slate-600 dark:text-slate-400">
+                                        <li>Personas mal controladas</li>
+                                        <li>Más de 20 años de evolución de la enfermedad</li>
+                                        <li>Personas insulinodependientes</li>
+                                        <li>Personas con retinopatía diabética <i class="fa-solid fa-arrow-right text-rose-600 mx-1"></i> <strong>Derivación Oftalmología / RECA</strong></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div>
+                                    <strong>Exploración de piel / pie diabético:</strong> Según resultado de estratificación:
+                                    <div class="mt-1 font-semibold text-clinical-600 dark:text-clinical-400 text-[11px]">
+                                        [ Riesgo muy bajo | Bajo | Moderado | Alto | Muy alto ]
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>ECG:</strong> Cada 2 años o si clínica patológica.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-rose-100 dark:border-rose-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div>
+                                    <strong>Analítica:</strong>
+                                    <ul class="list-disc ml-4 mt-1 space-y-0.5 text-slate-600 dark:text-slate-400">
+                                        <li><strong>Cada 6 meses:</strong> HbA1c + Perfil lipídico + Perfil renal (si alto riesgo cardiovascular).</li>
+                                        <li><strong>Anual:</strong> HbA1c completo con eGFR b12 o b6 con metformina prolongada.</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    ${commonValoracionHTML}
+                `;
+            } else if (pathology === 'dm2' && condition === 'cambio') {
+                indicator.innerHTML = '<span class="text-amber-600 dark:text-amber-400">DM2 - Cambio de Tratamiento / Revisión</span>';
+                container.innerHTML = `
+                    <div class="bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center space-x-2 text-amber-700 dark:text-amber-300 font-bold text-sm">
+                            <i class="fa-solid fa-pills"></i>
+                            <span>Resumen de actuaciones requeridas (Checklist Clínico Cambio Tratamiento)</span>
+                        </div>
+                        <ul class="space-y-3 text-xs text-slate-700 dark:text-slate-300">
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-amber-100 dark:border-amber-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>ITB (Índice Tobillo-Brazo):</strong> Valoración inicial o de control post-cambio.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-amber-100 dark:border-amber-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>Retinografía:</strong> Cada 2-3 años (excepto casos especiales con derivación).</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-amber-100 dark:border-amber-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>Exploración de piel / pie:</strong> Inspección exhaustiva según guía de pie diabético.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-amber-100 dark:border-amber-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>ECG:</strong> Cada 2 años o si clínica patológica.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-amber-100 dark:border-amber-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>Control de salud frecuente:</strong> Programado cada 3 meses tras cambio de tratamiento.</div>
+                            </li>
+                            <li class="flex items-start bg-white dark:bg-slate-800 p-3.5 rounded-xl border border-amber-100 dark:border-amber-900/30 shadow-xs">
+                                <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-clinical-600 focus:ring-clinical-500">
+                                <div><strong>Analítica de control:</strong> HbA1c + perfil renal/lipídico y ajuste según eGFR / metformina prolongada.</div>
+                            </li>
+                        </ul>
+                    </div>
+                    ${commonValoracionHTML}
+                `;
+            }
+
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // IMC Calculator Helper Function
+        function calculateIMC() {
+            const peso = parseFloat(document.getElementById('calcPeso').value);
+            const tallaCm = parseFloat(document.getElementById('calcTalla').value);
+            const res = document.getElementById('imcResult');
+
+            if (!peso || !tallaCm || peso <= 0 || tallaCm <= 0) {
+                res.innerText = 'Por favor introduzca valores válidos de peso y talla.';
+                return;
+            }
+
+            const tallaM = tallaCm / 100;
+            const imc = (peso / (tallaM * tallaM)).toFixed(1);
+            let clasificacion = '';
+
+            if (imc < 18.5) clasificacion = 'Bajo peso';
+            else if (imc < 25) clasificacion = 'Peso normal (saludable)';
+            else if (imc < 30) clasificacion = 'Sobrepeso';
+            else if (imc < 35) clasificacion = 'Obesidad grado I';
+            else if (imc < 40) clasificacion = 'Obesidad grado II';
+            else clasificacion = 'Obesidad mórbida (grado III)';
+
+            res.innerHTML = `IMC: <span class="text-slate-900 dark:text-white font-extrabold">${imc}</span> (${clasificacion})`;
+        }
+
+        // Update checklist progress counters
+        function updateProgress() {
+            const checks = document.querySelectorAll('.action-check');
+            const checked = document.querySelectorAll('.action-check:checked');
+            if (checks.length > 0) {
+                document.getElementById('progressText').innerText = `${checked.length}/${checks.length} completados`;
+            }
+        }
+
+        // Reset workflows
+        function resetAllWorkflows() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            goToScreen1();
+        }
+
+        // Toggle Dark / Light mode
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.className = "fa-solid fa-moon";
+            } else {
+                html.classList.add('dark');
+                icon.className = "fa-solid fa-sun";
+            }
+        }
+    </script>
+</body>
+</html>
