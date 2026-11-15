@@ -1,0 +1,59 @@
+<div class="space-y-6">
+    <div class="flex items-center justify-between bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <button onclick="loadView('landpage.html')" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-colors flex items-center">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Volver a Selección Principal
+        </button>
+        <div class="text-xs font-bold uppercase tracking-wider text-clinical-600 dark:text-clinical-400">
+            <i class="fa-solid fa-droplet mr-1.5"></i> Paciente Crónico 2: Diabetes Mellitus (DM)
+        </div>
+    </div>
+
+    <div class="text-center max-w-xl mx-auto py-6">
+        <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Seleccione el Estado Clínico DM</h2>
+    </div>
+
+    <!-- Opciones de DM2 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <!-- DM2 Buen Control -->
+        <div onclick="loadView('dm_good.html')" class="cursor-pointer bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-emerald-500 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white mb-2">DM - Buen Control</h3>
+            </div>
+            <div class="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-emerald-600 dark:text-emerald-400 font-semibold text-xs">
+                <span>Ver resumen de acciones</span>
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
+            </div>
+        </div>
+
+        <!-- DM2 Mal Control -->
+        <div onclick="loadView('dm_bad.html')" class="cursor-pointer bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-rose-500 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white mb-2">DM - Mal Control</h3>
+            </div>
+            <div class="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-rose-600 dark:text-rose-400 font-semibold text-xs">
+                <span>Ver resumen de acciones</span>
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
+            </div>
+        </div>
+
+        <!-- DM2 Cambio de Tratamiento -->
+        <div onclick="loadView('dm_new_tmnt.html')" class="cursor-pointer bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-amber-500 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl mb-4">
+                    <i class="fa-solid fa-pills"></i>
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white mb-2">DM - Cambio de Tratamiento</h3>
+            </div>
+            <div class="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-amber-600 dark:text-amber-400 font-semibold text-xs">
+                <span>Ver resumen de acciones</span>
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
+            </div>
+        </div>
+    </div>
+</div>

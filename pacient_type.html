@@ -1,0 +1,79 @@
+<div class="space-y-6">
+    <div class="flex items-center justify-between bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <button onclick="loadView('landpage.html')" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-colors flex items-center">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Volver a Selección Principal
+        </button>
+        <div id="screen2HeaderTitle" class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300"></div>
+    </div>
+
+    <div class="text-center max-w-xl mx-auto py-6">
+        <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">Seleccione el Tipo de Paciente y Estado Clínico</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            Elija la condición exacta para generar automáticamente el resumen de tareas requeridas en la siguiente pantalla.
+        </p>
+    </div>
+
+    <div id="conditionGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"></div>
+</div>
+
+<script>
+    (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const pathology = urlParams.get('pathology') || 'hta';
+        const headerTitle = document.getElementById('screen2HeaderTitle');
+        const grid = document.getElementById('conditionGrid');
+        grid.innerHTML = '';
+
+        if (pathology === 'hta') {
+            headerTitle.innerHTML = '<span class="text-medical-600 dark:text-medical-400"><i class="fa-solid fa-heart-pulse mr-1.5"></i> Paciente Crónico 1: Hipertensión Arterial (HTA)</span>';
+            const htaConditions = [
+                { id: 'hta_bad', title: 'HTA Conocida - Mal Controlada', desc: 'Paciente diagnosticado con cifras tensionales elevadas o fuera de objetivos terapéuticos.', icon: 'fa-triangle-exclamation', color: 'rose' },
+                { id: 'hta_good', title: 'HTA Conocida - Bien Controlada', desc: 'Paciente con presiones arteriales en rango objetivo y estabilidad clínica.', icon: 'fa-circle-check', color: 'emerald' },
+                { id: 'new_no_hta', title: 'Nuevo Diagnóstico / Sin HTA Previa', desc: 'Valoración inicial en centro de salud o paciente con sospecha de nueva hipertensión.', icon: 'fa-user-plus', color: 'blue' }
+            ];
+
+            htaConditions.forEach(c => {
+                grid.innerHTML += `
+                    <div onclick="loadView('${c.id}.html')" class="cursor-pointer bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-${c.color}-500 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-${c.color}-50 dark:bg-${c.color}-950 text-${c.color}-600 dark:text-${c.color}-400 flex items-center justify-center text-xl mb-4">
+                                <i class="fa-solid ${c.icon}"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white mb-2">${c.title}</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${c.desc}</p>
+                        </div>
+                        <div class="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-${c.color}-600 dark:text-${c.color}-400 font-semibold text-xs">
+                            <span>Ver resumen de acciones</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+                `;
+            });
+        } else {
+            headerTitle.innerHTML = '<span class="text-clinical-600 dark:text-clinical-400"><i class="fa-solid fa-droplet mr-1.5"></i> Paciente Crónico 2: Diabetes Mellitus (DM2)</span>';
+            const dm2Conditions = [
+                { id: 'hta_good', title: 'DM2 - Buen Control', desc: 'Paciente con valores de HbA1c en objetivos terapéuticos y estabilidad clínica mantenida.', icon: 'fa-circle-check', color: 'emerald', file: 'hta_good.html' },
+                { id: 'hta_bad', title: 'DM2 - Mal Control', desc: 'Paciente con valores de HbA1c elevados fuera de objetivos terapéuticos.', icon: 'fa-triangle-exclamation', color: 'rose', file: 'hta_bad.html' },
+                { id: 'valoration', title: 'DM2 - Cambio de Tratamiento / Revisión', desc: 'Modificación reciente en pauta farmacológica o ajuste de medicación oral/insulina.', icon: 'fa-pills', color: 'amber', file: 'valoration.html' }
+            ];
+
+            dm2Conditions.forEach(c => {
+                grid.innerHTML += `
+                    <div onclick="loadView('${c.file}')" class="cursor-pointer bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-${c.color}-500 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-${c.color}-50 dark:bg-${c.color}-950 text-${c.color}-600 dark:text-${c.color}-400 flex items-center justify-center text-xl mb-4">
+                                <i class="fa-solid ${c.icon}"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white mb-2">${c.title}</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${c.desc}</p>
+                        </div>
+                        <div class="mt-6 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-${c.color}-600 dark:text-${c.color}-400 font-semibold text-xs">
+                            <span>Ver resumen de acciones</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    })();
+</script>
