@@ -1,0 +1,110 @@
+<div class="mt-8 pt-6 border-t-2 border-slate-200 dark:border-slate-700 space-y-6 dark:bg-slate-800">
+    <div class="flex items-center space-x-3 bg-medical-50 dark:bg-medical-950/40 p-4 rounded-2xl border border-medical-200 dark:border-medical-800 dark:bg-slate-800">
+        <div class="w-10 h-10 rounded-xl bg-medical-500 text-white flex items-center justify-center font-bold text-sm shadow-sm dark:bg-slate-900">
+            <i class="fa-solid fa-clipboard-user"></i>
+        </div>
+        <div>
+            <h3 class="font-bold text-slate-900 dark:text-white text-base">Valoración en consulta</h3>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Examen físico -->
+        <div class="bg-slate-50 dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="flex items-center space-x-2 text-slate-900 dark:text-white font-bold text-sm">
+                <i class="fa-solid fa-stethoscope text-medical-600"></i>
+                <span>Examen físico</span>
+            </div>
+            <ul class="space-y-3 text-xs text-slate-700 dark:text-slate-300">
+                <li onclick="toggleCardCheckbox(event, this)" class="cursor-pointer flex items-start bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500 pointer-events-none">
+                    <div class="flex-1">
+                        <strong>Peso, talla e IMC</strong>
+                        <div class="mt-2 p-2 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                            <div class="text-[11px] font-semibold text-slate-500 mb-1"><i class="fa-solid fa-calculator mr-1"></i> Calculadora IMC Rápida:</div>
+                            <div class="flex items-center space-x-2">
+                                <input type="number" id="calcTalla" placeholder="Talla (cm)" class="w-1/2 px-2 py-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-xs">
+                                <input type="number" id="calcPeso" placeholder="Peso (kg)" class="w-1/2 px-2 py-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded text-xs">
+                                <button onclick="calculateIMC()" class="px-2.5 py-1 bg-medical-600 hover:bg-medical-700 text-white rounded text-[11px] font-semibold transition-colors">Calcular</button>
+                            </div>
+                            <div id="imcResult" class="mt-1.5 text-[11px] font-bold text-medical-600 dark:text-medical-400"></div>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="toggleCardCheckbox(event, this)" class="cursor-pointer bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <div class="flex items-start">
+                        <!-- pointer-events-none prevents double-firing when clicking the checkbox directly -->
+                        <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500 pointer-events-none">
+                        <div class="w-full">
+                            <strong>Perímetro abdominal</strong>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="toggleCardCheckbox(event, this)" class="cursor-pointer bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <div class="flex items-start">
+                        <!-- pointer-events-none prevents double-firing when clicking the checkbox directly -->
+                        <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500 pointer-events-none">
+                        <div class="w-full">
+                            <strong>TA</strong>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Anamnesis -->
+        <div class="bg-slate-50 dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="flex items-center space-x-2 text-slate-900 dark:text-white font-bold text-sm">
+                <i class="fa-solid fa-comments text-medical-600"></i>
+                <span>Anamnesis</span>
+            </div>
+            <ul class="space-y-3 text-xs text-slate-700 dark:text-slate-300">
+                <li onclick="toggleCardCheckbox(event, this)" class="cursor-pointer bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <div class="flex items-start">
+                        <!-- pointer-events-none prevents double-firing when clicking the checkbox directly -->
+                        <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500 pointer-events-none">
+                        <div class="w-full">
+                            <strong>Antecedentes personales y problemas de salud</strong>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="toggleCardCheckbox(event, this)" class="cursor-pointer bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <div class="flex items-start">
+                        <!-- pointer-events-none prevents double-firing when clicking the checkbox directly -->
+                        <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500 pointer-events-none">
+                        <div class="w-full">
+                            <strong>Adherencia farmacológica</strong>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="toggleCardCheckbox(event, this)" class="cursor-pointer bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <div class="flex items-start">
+                        <!-- pointer-events-none prevents double-firing when clicking the checkbox directly -->
+                        <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500 pointer-events-none">
+                        <div class="w-full">
+                            <strong>Vacunación:</strong> Gripe, Neumococo, Tétanos, HZ
+                        </div>
+                    </div>
+                </li>
+                <li onclick="toggleCardCheckbox(event, this)" class="cursor-pointer bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <div class="flex items-start">
+                        <!-- pointer-events-none prevents double-firing when clicking the checkbox directly -->
+                        <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500 pointer-events-none">
+                        <div class="w-full">
+                            <strong>Hábitos y estilo de vida:</strong> Actividad física y alimentación
+                        </div>
+                    </div>
+                </li>
+                <li onclick="toggleCardCheckbox(event, this)" class="cursor-pointer bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700 shadow-xs hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <div class="flex items-start">
+                        <!-- pointer-events-none prevents double-firing when clicking the checkbox directly -->
+                        <input type="checkbox" onchange="updateProgress()" class="action-check mt-0.5 mr-3 h-4 w-4 rounded border-slate-300 text-medical-600 focus:ring-medical-500 pointer-events-none">
+                        <div class="w-full">
+                            <strong>Consumo de sustancias:</strong> Tabaco, alcohol y tóxicos
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

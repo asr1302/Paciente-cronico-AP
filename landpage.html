@@ -1,0 +1,43 @@
+<div class="space-y-6">
+    <div class="text-center max-w-2xl mx-auto py-4">
+        <span class="px-3 py-1 bg-medical-50 dark:bg-medical-950 text-medical-700 dark:text-medical-300 text-xs font-bold rounded-full uppercase tracking-wider border border-medical-200 dark:border-medical-800">
+            Selección de tipo de paciente crónico
+        </span>
+        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-3">Control de salud clínico</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+            Seleccione el perfil de paciente crónico para iniciar el control clínico guiado.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto py-4">
+        <!-- Paciente Crónico 1 (HTA) -->
+        <div onclick="loadView('hta_selector.html')" class="cursor-pointer bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-medical-500 dark:hover:border-medical-500 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group flex flex-col justify-between">
+            <div class="absolute top-0 right-0 w-36 h-36 bg-medical-500/10 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+            <div>
+                <div class="w-14 h-14 rounded-2xl bg-medical-50 dark:bg-medical-950 text-medical-600 dark:text-medical-400 flex items-center justify-center text-2xl mb-6 shadow-sm">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1 mb-3">Hipertensión Arterial (HTA)</h3>
+            </div>
+            <div class="mt-8 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-medical-600 dark:text-medical-400 font-semibold text-sm">
+                <span>Seleccionar paciente</span>
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+            </div>
+        </div>
+
+        <!-- Paciente Crónico 2 (DM2) -->
+        <div onclick="loadView('dm_selector.html')" class="cursor-pointer bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-clinical-500 dark:hover:border-clinical-500 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden group flex flex-col justify-between">
+            <div class="absolute top-0 right-0 w-36 h-36 bg-clinical-500/10 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform"></div>
+            <div>
+                <div class="w-14 h-14 rounded-2xl bg-clinical-50 dark:bg-clinical-950 text-clinical-600 dark:text-clinical-400 flex items-center justify-center text-2xl mb-6 shadow-sm">
+                    <i class="fa-solid fa-droplet"></i>
+                </div>
+                <h3 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1 mb-3">Diabetes Mellitus (DM)</h3>
+            </div>
+            <div class="mt-8 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-clinical-600 dark:text-clinical-400 font-semibold text-sm">
+                <span>Seleccionar paciente</span>
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-2 transition-transform"></i>
+            </div>
+        </div>
+    </div>
+</div>
