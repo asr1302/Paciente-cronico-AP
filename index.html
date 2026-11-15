@@ -646,18 +646,34 @@
             goToScreen1();
         }
 
+		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+		function applyTheme(isDark) {
+			const html = document.documentElement;
+			const icon = document.getElementById('themeIcon');
+
+			if (isDark) {
+				html.classList.add('dark');
+				if (icon) icon.className = "fa-solid fa-sun";
+			} else {
+				html.classList.remove('dark');
+				if (icon) icon.className = "fa-solid fa-moon";
+			}
+		}
+
+		// Listen for real-time changes from the OS
+		mediaQuery.addEventListener('change', (e) => {
+			applyTheme(e.matches);
+		});
+
+		// Set the initial theme when the page loads based on the OS
+		applyTheme(mediaQuery.matches);
+
         // Toggle Dark / Light mode
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            const icon = document.getElementById('themeIcon');
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                icon.className = "fa-solid fa-moon";
-            } else {
-                html.classList.add('dark');
-                icon.className = "fa-solid fa-sun";
-            }
-        }
+		function toggleDarkMode() {
+			const isCurrentlyDark = document.documentElement.classList.contains('dark');
+			applyTheme(!isCurrentlyDark);
+		}
     </script>
 </body>
 </html>
